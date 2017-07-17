@@ -1,0 +1,84 @@
+#include <stdio.h>  
+#include <limits.h>  
+  
+int left_Sum, right_Sum, cross_Sum; // 分别存储三种情况下最大子数组的和值  
+int max_Left, max_Right;            
+  
+int Find_Maximum_Subarray(int * arr, int low, int high);    // 寻找最大子数组的递归函数  
+// 寻找跨越中点的最大子数组  
+int Find_Max_Crossing_Subarray(int * arr, int low, int mid, int high);  
+  
+int main()  
+{  
+    //int arr[17] = {0, 13, -3, -25, 20,  -3, -16, -23, 18,  
+    //               20, -7,  12, -5, -22,  15,  -4,  7};  
+	int arr[17] = {0,1,2,3,4,5,-6,-1,-7,-3,-4,-5,-6,-7,-8,-9,-10};
+    int number;  
+  
+    number = Find_Maximum_Subarray(arr, 1, 16);  
+  
+    fprintf(stdout, "找到的最大子数组的和值为%d\n", number);  
+    //fprintf(stdout, "最大子数组的左右边界分别为: %d %d\n", max_Left, max_Right);  
+  
+    return 0;  
+}  
+  
+int Find_Max_Crossing_Subarray(int * arr, int low, int mid, int high)  
+{  
+    int sum, i, j;  
+  
+    left_Sum = -INT_MAX;    // 初始化为负无穷，保证更新左和值  
+    sum = 0;  
+    for (i = mid; i >= low; i--)  
+    {  
+        sum = sum + arr[i];  
+        if (sum > left_Sum) // 如果加入新元素后大于上一次的最大和值  
+        {  
+            left_Sum = sum; // 更新和值  
+            max_Left = i;   // 记录左下标  
+        }  
+    }  
+  
+    right_Sum = -INT_MAX;   // 初始化为负无穷，保证更新左和值  
+    sum = 0;  
+    for (j = mid+1; j <= high; j++)  
+    {  
+        sum = sum + arr[j];  
+        if (sum > right_Sum) // 如果加入新元素后大于上一次的最大和值  
+        {  
+            right_Sum = sum; // 更新和值  
+            max_Right = j;   // 记录右下标  
+        }  
+    }  
+  
+ // 返回跨越中点的最大子数组值的和  
+    return (left_Sum + right_Sum);  
+}  
+  
+int Find_Maximum_Subarray(int * arr, int low, int high)  
+{  
+	int leftSum;
+	int rightSum;
+	int crossSum;
+
+
+    int mid;  
+  
+    if (low == high)            // 寻找区间只有一个元素  
+        return (arr[low]);    
+    else  
+    {  
+        mid = (low+high) / 2;   // 分解递归  
+        leftSum  = Find_Maximum_Subarray(arr, low, mid);  
+        rightSum = Find_Maximum_Subarray(arr, mid+1, high);  
+        crossSum = Find_Max_Crossing_Subarray(arr, low, mid, high);  
+  
+     // 分别返回三种情况(最大子数组在左边，跨越中点，右边)下的最大子数组和值  
+        if (leftSum>=rightSum && leftSum>=crossSum)  
+            return leftSum;  
+        else if (rightSum>=leftSum && rightSum>=crossSum)  
+            return rightSum;  
+        else  
+            return crossSum;  
+    }  
+}  
