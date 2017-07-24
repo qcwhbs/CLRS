@@ -1,0 +1,62 @@
+#include<stdio.h>
+#define LENGTH 11
+int heapSize;
+int PARENT(int i){
+	return i / 2;
+}
+
+int LEFT(int i){
+	return 2 * i;
+}
+
+int RIGHT(int i){
+	return 2 * i + 1;
+}
+
+void swap(int *i, int* j){
+	int temp = *i;
+	*i = *j;
+	*j = temp;
+} 
+
+
+void MAX_HEAPIFY(int* A, int i){
+	int l = LEFT(i);
+	int r = RIGHT(i);
+	int largest = i; 
+	if(l <= heapSize && A[l] > A[i])
+		largest = l;
+	if(r <= heapSize && A[r] > A[largest])
+		largest = r;
+	if(largest != i){
+		swap(&A[i], &A[largest]);
+		MAX_HEAPIFY(A, largest);
+	}
+} 
+
+void BUILD_MAX_HEAP(int* A){
+	heapSize = LENGTH - 1;
+	for(int i = (LENGTH - 1) / 2; i > 0; i--){
+		MAX_HEAPIFY(A, i);
+	}
+}
+
+void HEAPSORT(int* A){
+	BUILD_MAX_HEAP(A);
+	for(int i = LENGTH - 1; i > 1; i--){
+		swap(&A[1], &A[i]);
+		heapSize--;
+		MAX_HEAPIFY(A, 1);
+	}
+}
+int main(){
+	int A[LENGTH] = {10, 4, 1, 3, 2, 16, 9, 10, 14, 8, 7};		//A[0]不算在带排序序列中 
+	for(int i = 1; i < LENGTH; i++){
+		printf("%d\t",A[i]);
+	}
+	printf("\n");
+	HEAPSORT(A);
+	for(int i = 1; i < LENGTH; i++){
+		printf("%d\t",A[i]);
+	}
+}
