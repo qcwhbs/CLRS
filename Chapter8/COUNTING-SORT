@@ -1,0 +1,33 @@
+#include<stdio.h>
+#define LENGTH 10 
+void COUNTING_SORT(int* A, int* B, int k);
+void COUNTING_SORT(int* A, int* B, int k){
+	int C[k]; 
+	int i, j;
+	for(i = 0; i <= k; i++){
+		C[i] = 0;
+	}
+	for(j = 1; j <= LENGTH; j++){
+		C[A[j]] = C[A[j]] + 1;
+	}
+	for(i = 1; i <= k; i++){
+		C[i] = C[i] + C[i - 1];
+	}
+	for(j = LENGTH; j > 0; j--){
+		B[C[A[j]]] = A[j];
+		C[A[j]] = C[A[j]] - 1;
+	}
+}
+int main(){
+	int A[LENGTH + 1] = {0,1,9,3,5,7,10,6,8,4,2};
+	int B[LENGTH + 1]={0};
+	COUNTING_SORT(A, B, 10);
+	for(int i = 1; i <= LENGTH;  i++){
+		printf("%d\t",A[i]);
+	}
+	printf("\n");
+	for(int i = 1; i <= LENGTH;  i++){
+		printf("%d\t",B[i]);
+	}
+	return 0;
+}
