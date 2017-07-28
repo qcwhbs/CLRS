@@ -2,7 +2,7 @@
 #define LENGTH 10 
 void COUNTING_SORT(int* A, int* B, int k);
 void COUNTING_SORT(int* A, int* B, int k){
-	int C[k]; 
+	int C[k + 1]; 
 	int i, j;
 	for(i = 0; i <= k; i++){
 		C[i] = 0;
